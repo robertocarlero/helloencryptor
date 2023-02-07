@@ -1,0 +1,48 @@
+/* Colors */
+:root {
+  --color-primary: #5463ff;
+  --color-dark: #33354f;
+  --color-medium: #a9a9a9;
+  --color-danger: #ec255a;
+
+  --color-light: #f5f8ff;
+  --color-primary-light: #f5f8ff;
+  --color-danger-light: #ef5da81a;
+
+  --color-white: white;
+  --color-black: black;
+}
+
+/* Font sizes*/
+:root {
+  --font-size-large: 32px;
+  --font-size-medium: 24px;
+  --font-size-small: 14px;
+  --font-size-extra-small: 10px;
+}
+
+/* Radius */
+:root {
+  --radius-large: 20px;
+  --radius-medium: 10px;
+  --radius-small: 5px;
+}
+
+/* Pading */
+:root {
+  --padding-large: 20px;
+  --padding-medium: 10px;
+  --padding-small: 5px;
+}
+
+/* Margin */
+:root {
+  --margin-large: 20px;
+  --margin-medium: 10px;
+  --margin-small: 5px;
+}
+
+/* Layout */
+:root {
+  --menu-width: 270px;
+}

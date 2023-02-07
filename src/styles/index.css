@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope&display=swap');
+@import url('vars.css');
+@import url('theme.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  font-family: 'Manrope', sans-serif;
+}
+
+small {
+  font-size: var(--font-size-extra-small);
+}
+p,
+label {
+  font-size: var(--font-size-small);
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+:focus {
+  outline: none;
+}
+
+.app-max-width {
+  max-width: 768px;
+}
+
+.text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-underline {
+  text-decoration: underline !important;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+.border_side {
+  border-left: 1px solid var(--color-medium);
+  border-right: 1px solid var(--color-medium);
+}
+
+.form-control-error {
+  border: red solid 1px !important;
+}
