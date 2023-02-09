@@ -44,7 +44,7 @@ const FilesList = ({ onSelect, files, multiple }) => {
                 title={file.name}
                 description={
                   <span>
-                    <b>Tamaño:</b> {file.size}KB
+                    <b>Size:</b> {file.size}KB
                   </span>
                 }
                 onSelect={() => onOneItemSelected(file)}

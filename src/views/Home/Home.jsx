@@ -11,9 +11,9 @@ export default function Home() {
         </figure>
       </AdviceContainer>
       <p className="color_medium text-center">
-        Con Hello Encryptor, puede cifrar sus contraseñas en un archivo de Excel
-        simple, para que nunca más olvide su contraseña. Mantenga sus
-        contraseñas con usted en todo momento en un archivo cifrado.
+        With Hello Encryptor, you can encrypt and save your passwords, so you
+        never forget your password again. Keep your passwords with you at all
+        times in an encrypted file.
       </p>
     </section>
   );

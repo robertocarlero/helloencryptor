@@ -10,7 +10,7 @@ import database from 'helpers/database';
 import { DB_COLLECTIONS } from 'constants/db-collections';
 import SimpleForm from 'components/common/SimpleForm';
 
-import { SHA256, enc } from 'crypto-js';
+import { createHash } from 'helpers/encrypt';
 
 const CreateUser = ({ onCancel, onSuccess, data }) => {
   const [saved, setSaved] = useState(false);
@@ -20,8 +20,7 @@ const CreateUser = ({ onCancel, onSuccess, data }) => {
   const DB = database();
 
   const sendData = () => {
-    const hash = SHA256(formValue?.password);
-    const password = hash.toString(enc.Hex);
+    const password = createHash(formValue?.password);
     const body = {
       ...formValue,
       password,
@@ -52,9 +51,7 @@ const CreateUser = ({ onCancel, onSuccess, data }) => {
 
   return (
     <div className="d-flex flex-column">
-      <h5 className="color_danger font-weight-bold mb-5 text-center">
-        Crear nuevo usuario
-      </h5>
+      <h5 className="font-weight-bold mb-5 text-center">Create User</h5>
 
       {!saved && (
         <SimpleForm

@@ -30,21 +30,18 @@ const InputFile = ({ onChange }) => {
         <figure className="asset px-5 d-flex justify-content-center ">
           <img src={asset} alt="" />
         </figure>
-        <h5 className="text-uppercase text-center m-0 color_black">
-          Puedes arrastrar un archivo
-        </h5>
-        <p className="px-5 text-center color_dark">o también puedes</p>
-        <div className="d-flex justify-content-center w-100 p-2">
-          <Button variant="contained" color="primary" className="p-0 shadow">
-            <LoadFileSingle
-              className="px-4 py-2 btn d-flex align-items-center color_white mb-0"
-              onLoad={onLoadFileSingleChange}
-            >
-              <SearchIcon />
-              Burcar el archivo
-            </LoadFileSingle>
-          </Button>
-        </div>
+        <h5 className="text-center m-0 color_black">You can drag a file</h5>
+        <p className="text-center color_medium">or you can also</p>
+
+        <Button variant="outlined" color="primary" className="p-0">
+          <LoadFileSingle
+            className="px-4 py-2 btn d-flex align-items-center color_primary mb-0"
+            onLoad={onLoadFileSingleChange}
+          >
+            <SearchIcon className="mr-2" />
+            Search the file
+          </LoadFileSingle>
+        </Button>
       </section>
     </>
   );

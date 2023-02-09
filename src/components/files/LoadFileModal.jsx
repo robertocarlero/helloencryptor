@@ -26,22 +26,20 @@ const LoadFileModal = ({ onClose, opened = false, multiple = false }) => {
       </DialogContent>
       <DialogActions>
         <Button
-          className="rounded-pill px-4"
           onClick={() => closeModal(null)}
           color="primary"
           variant="outlined"
         >
-          Cancelar
+          Cancel
         </Button>
         <Button
           disabled={!items || !items.length}
           onClick={() => closeModal(items)}
-          className="rounded-pill px-4"
           color="primary"
           variant="contained"
           autoFocus
         >
-          Continuar
+          Continue
         </Button>
       </DialogActions>
     </Dialog>

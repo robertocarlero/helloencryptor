@@ -9,8 +9,9 @@ import ConfirmUserPassword from 'components/users/ConfirmUserPassword';
 import { PASSWORD_CREATE_FORM_SCHEMA } from 'constants/forms/schemas';
 import { DB_COLLECTIONS } from 'constants/db-collections';
 
-import { AES } from 'crypto-js';
 import { useQuery } from 'react-query';
+import { queryClient } from 'containers/CustomQueryClientProvider';
+import { encryptText } from 'helpers/encrypt';
 
 const CreatePassword = ({ onCancel, onSuccess, data }) => {
   const [saved, setSaved] = useState(false);
@@ -33,8 +34,8 @@ const CreatePassword = ({ onCancel, onSuccess, data }) => {
     value: id,
   }));
 
-  const sendData = (secret_key) => {
-    const password = AES.encrypt(formValue?.password, secret_key).toString();
+  const sendData = (secretKey) => {
+    const password = encryptText(formValue?.password, secretKey);
 
     const body = {
       ...formValue,
@@ -44,6 +45,9 @@ const CreatePassword = ({ onCancel, onSuccess, data }) => {
     delete body.confirm_password;
 
     DB.set(DB_COLLECTIONS.PASSWORDS, body);
+    queryClient.invalidateQueries({
+      queryKey: [`/${DB_COLLECTIONS.PASSWORDS}`],
+    });
     setSaved(true);
   };
 
@@ -68,9 +72,7 @@ const CreatePassword = ({ onCancel, onSuccess, data }) => {
 
   return (
     <div className="d-flex flex-column">
-      <h5 className="color_danger font-weight-bold mb-5 text-center">
-        Crear nueva contraseña
-      </h5>
+      <h5 className="font-weight-bold mb-5 text-center">Create Password</h5>
 
       {!saved && (
         <SimpleForm

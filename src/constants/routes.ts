@@ -1,27 +1,29 @@
+import { House, Key, People, Upload } from '@mui/icons-material';
+
 import { Home, ImportPasswords, Passwords, Users } from 'views';
 
 export const ROUTES = {
   HOME: {
     title: 'Home',
-    icon: '🏠',
+    Icon: House,
     path: '/home',
     Component: Home,
   },
   IMPORT_PASSWORDS: {
     title: 'Import Passwords',
-    icon: '🏠',
+    Icon: Upload,
     path: '/import',
     Component: ImportPasswords,
   },
   PASSWORDS: {
     title: 'Passwords',
-    icon: '🏠',
+    Icon: Key,
     path: '/passwords',
     Component: Passwords,
   },
   USERS: {
     title: 'Users',
-    icon: '🏠',
+    Icon: People,
     path: '/users',
     Component: Users,
   },

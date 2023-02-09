@@ -9,6 +9,15 @@ import {
   TextField,
   FormHelperText,
 } from '@mui/material';
+import { PasswordInput } from 'components/inputs/PasswordInput';
+
+const SimpleInput = ({ type, ...props }) => {
+  return type === 'password' ? (
+    <PasswordInput {...props} />
+  ) : (
+    <TextField {...props} />
+  );
+};
 
 const InputsDisplayer = ({ fields = [], onInputChange, values, errors }) => {
   return (
@@ -61,25 +70,23 @@ const InputsDisplayer = ({ fields = [], onInputChange, values, errors }) => {
                 </>
               )}
               {type !== 'select' && (
-                <>
-                  <TextField
-                    name={name}
-                    fullWidth
-                    type={type || 'text'}
-                    id={name}
-                    value={values[name] === undefined ? '' : values[name]}
-                    onChange={onInputChange}
-                    variant="outlined"
-                    label={label}
-                    error={!!errors[name]}
-                    InputLabelProps={{
-                      [type === 'date' ? 'shrink' : 'focused']: type === 'date',
-                    }}
-                    helperText={errors[name] || ''}
-                    required={isRequired}
-                    {...field}
-                  />
-                </>
+                <SimpleInput
+                  name={name}
+                  fullWidth
+                  type={type || 'text'}
+                  id={name}
+                  value={values[name] === undefined ? '' : values[name]}
+                  onChange={onInputChange}
+                  variant="outlined"
+                  label={label}
+                  error={!!errors[name]}
+                  InputLabelProps={{
+                    [type === 'date' ? 'shrink' : 'focused']: type === 'date',
+                  }}
+                  helperText={errors[name] || ''}
+                  required={isRequired}
+                  {...field}
+                />
               )}
             </FormControl>
           );

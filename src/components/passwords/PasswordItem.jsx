@@ -4,31 +4,27 @@ import { IconButton } from '@mui/material';
 
 import { Delete, Visibility } from '@mui/icons-material';
 
-import database from 'helpers/database';
+import { DB } from 'helpers/database';
 
+import { queryClient } from 'containers/CustomQueryClientProvider';
 import { Avatar } from 'components/common/Avatar';
 import ConfirmAlert from 'components/common/ConfirmAlert';
+import ConfirmUserPassword from 'components/users/ConfirmUserPassword';
 
 import { DB_COLLECTIONS } from 'constants/db-collections';
 
-import { AES, enc } from 'crypto-js';
-import ConfirmUserPassword from 'components/users/ConfirmUserPassword';
+import PasswordDetailModal from './PasswordDetailModal';
 
 const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
   const [confirmIsVisible, setConfirmIsVisible] = useState(false);
+  const [passwordDetailIsVisible, setPasswordDetailIsVisible] = useState(false);
+  const [secretKey, setSecretKey] = useState(false);
   const [confirmPasswordIsVisible, setConfirmPasswordIsVisible] =
     useState(false);
 
-  const { name, user_id, password } = data;
+  const { name, user_id } = data;
 
-  const DB = database();
   const user = DB.get(`${DB_COLLECTIONS.USERS}/${user_id}`) || {};
-
-  const decryptPassword = (secret_key) => {
-    const cipherText = AES.decrypt(password, secret_key);
-    const passwordDecrypted = cipherText.toString(enc.Utf8);
-    console.log(passwordDecrypted);
-  };
 
   const onDeleteButtonClick = () => {
     setConfirmIsVisible(true);
@@ -38,16 +34,28 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
     setConfirmIsVisible(false);
     if (!result) return;
     DB.erase(`${DB_COLLECTIONS.PASSWORDS}/${data?.id}`);
+    queryClient.invalidateQueries({
+      queryKey: [`/${DB_COLLECTIONS.PASSWORDS}`],
+    });
   };
 
   const onConfirmPasswordClose = async (result) => {
-    setConfirmIsVisible(false);
+    setConfirmPasswordIsVisible(false);
     if (!result) return;
-    decryptPassword(result);
+    setSecretKey(result);
+    setPasswordDetailIsVisible(true);
   };
 
   const onVisibilityButtonClick = () => {
-    setConfirmPasswordIsVisible(true);
+    if (!secretKey) {
+      setConfirmPasswordIsVisible(true);
+      return;
+    }
+    setPasswordDetailIsVisible(true);
+  };
+
+  const onPasswordDetailClose = () => {
+    setPasswordDetailIsVisible(false);
   };
 
   return (
@@ -55,7 +63,7 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
       role="button"
       tabIndex={0}
       onKeyUp={() => onKeyUp && onKeyUp()}
-      className={`w-100 bg_white shadow radius_medium d-flex justify-content-between align-items-center p-2 ${
+      className={`w-100 bg_white shadow-sm radius_medium d-flex justify-content-between align-items-center p-2 ${
         className || ''
       }`}
       onClick={() => onClick && onClick()}
@@ -64,8 +72,8 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
       <div className="w-100 h-100 d-flex ">
         <Avatar alt={name} />
         <div className="ml-3 d-flex flex-column justify-content-center">
-          <b>{name || 'Desconocido'}</b>
-          <p className="m-0 color_medium">{user?.name || 'Sin usuario'}</p>
+          <b>{name || 'Unknown'}</b>
+          <p className="m-0 color_medium">{user?.name || 'Without user'}</p>
         </div>
       </div>
       <IconButton onClick={onDeleteButtonClick}>
@@ -84,6 +92,12 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
         userId={user_id}
         opened={confirmPasswordIsVisible}
         onClose={onConfirmPasswordClose}
+      />
+      <PasswordDetailModal
+        data={data}
+        secretKey={secretKey}
+        opened={passwordDetailIsVisible}
+        onClose={onPasswordDetailClose}
       />
     </div>
   );
