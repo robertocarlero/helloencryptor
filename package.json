@@ -1,5 +1,6 @@
 {
-  "description": "A foundation for scalable desktop apps",
+  "description": "A encryptor app",
+  "version": "1.0.0",
   "keywords": [
     "electron",
     "boilerplate",
@@ -17,13 +18,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
+    "url": "git+https://gitlab.com/robertocarlero/hello-encryptor.git"
   },
   "license": "MIT",
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
-    "url": "https://electron-react-boilerplate.js.org"
+    "name": "Roberto Quintero",
+    "email": "robertocarlero@gmail.com",
+    "url": "https://robertocarlero.com"
   },
   "contributors": [
     {
@@ -39,7 +40,7 @@
     "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
     "postinstall": "ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
     "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
-    "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never",
+    "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --linux  --publish never",
     "prepare": "husky install",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
@@ -147,7 +148,7 @@
     "css-minimizer-webpack-plugin": "^4.0.0",
     "detect-port": "^1.3.0",
     "electron": "^20.0.2",
-    "electron-builder": "^23.3.3",
+    "electron-builder": "^23.6.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-notarize": "^1.2.1",
     "electron-rebuild": "^3.2.9",
@@ -192,8 +193,8 @@
     "webpack-merge": "^5.8.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Hello Encryptor",
+    "appId": "hello-encryptor.helloware.tech",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -237,9 +238,10 @@
     },
     "linux": {
       "target": [
-        "AppImage"
+        "AppImage",
+        "deb"
       ],
-      "category": "Development"
+      "category": "Tools"
     },
     "directories": {
       "app": "release/app",
