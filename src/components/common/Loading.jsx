@@ -11,7 +11,7 @@ const Loading = ({ title, simple, ...props }) => (
       </figure>
     )}
     <p className={`color_medium ${!simple ? 'text-center m-0 my-3' : ''}`}>
-      {title || 'Cargando'}...
+      {title || 'Loading'}...
     </p>
     <CircularProgress {...props} />
   </>

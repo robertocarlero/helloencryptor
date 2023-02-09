@@ -12,6 +12,7 @@ import { NAVIGATION_ROUTES, ROUTES } from 'constants/routes';
 
 import 'styles/App.css';
 import { useEffect } from 'react';
+import MaterialUiThemeProvider from 'containers/MaterialUiThemeProvider';
 
 const DefaultRedirect = () => {
   const navigate = useNavigate();
@@ -26,21 +27,23 @@ const DefaultRedirect = () => {
 export default function App() {
   return (
     <CustomQueryClientProvider>
-      <Router>
-        <Routes>
-          {NAVIGATION_ROUTES.map(({ Component, ...route }) => (
-            <Route
-              {...route}
-              element={
-                <Layout>
-                  <Component />
-                </Layout>
-              }
-            />
-          ))}
-          <Route path="/" element={<DefaultRedirect />} />
-        </Routes>
-      </Router>
+      <MaterialUiThemeProvider>
+        <Router>
+          <Routes>
+            {NAVIGATION_ROUTES.map(({ Component, ...route }) => (
+              <Route
+                {...route}
+                element={
+                  <Layout>
+                    <Component />
+                  </Layout>
+                }
+              />
+            ))}
+            <Route path="/" element={<DefaultRedirect />} />
+          </Routes>
+        </Router>
+      </MaterialUiThemeProvider>
     </CustomQueryClientProvider>
   );
 }

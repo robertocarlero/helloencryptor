@@ -17,7 +17,7 @@ const Success = ({ title, onContinue, color = 'primary' }) => {
           autoFocus
           onClick={onContinue}
         >
-          Continuar
+          Continue
         </Button>
       )}
     </>

@@ -20,13 +20,13 @@ const Passwords = () => {
   };
 
   return (
-    <>
+    <section className="app-max-width m-auto h-100">
       <div className="wrapper d-flex align-items-stretch h-100">
         <div className="w-100 h-100 d-flex flex-column">
           <section className="w-100 p-3 overflow-auto">
             <header className="p-3 mt-3">
               <h1 className="font-weight-bold title color_dark">
-                Password list
+                Passwords list
                 <div className="float-sm-right">
                   <ButtonGroup
                     variant="outlined"
@@ -53,7 +53,7 @@ const Passwords = () => {
         opened={modalPasswordCreateModalIsVisible}
         onClose={onModalPasswordCreateClose}
       />
-    </>
+    </section>
   );
 };
 

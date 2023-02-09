@@ -1,25 +1,26 @@
 export const USER_CREATE_FORM_SCHEMA = [
   {
     name: 'name',
-    placeholder: 'Ej. Jhon Doe',
-    label: 'Nombre',
+    placeholder: 'Ex. John Doe',
+    label: 'Name',
     required: true,
   },
   {
     name: 'password',
     placeholder: '**********',
-    label: 'Contraseña',
+    label: 'Password',
     type: 'password',
     required: true,
     pattern:
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,50}$/,
     patternMessage:
-      'La contraseña debe tener, mínimo 8 caracteres, máximo 50 caracteres, al menos una letra mayúscula, al menos una letra minúscula, al menos un dígito, al menos 1 caracter especial y no puede tener espacios en blanco',
+      'The password must have a minimum of 8 characters, a maximum of 50 characters, at least one uppercase letter, at least one lowercase letter, at least one digit, at least 1 special character and cannot have blank spaces.',
+    generate: true,
   },
   {
     name: 'confirm_password',
     placeholder: '**********',
-    label: 'Confirmar Contraseña',
+    label: 'Confirm Password',
     type: 'password',
     required: true,
     match: 'password',

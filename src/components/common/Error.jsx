@@ -13,7 +13,7 @@ const Error = ({ title, onCancel, onRetry, color = 'primary' }) => {
       <div className="d-flex">
         {onCancel && (
           <Button color={color} variant="outlined" onClick={onCancel}>
-            Cancelar
+            Cancel
           </Button>
         )}
         {onRetry && (
@@ -23,7 +23,7 @@ const Error = ({ title, onCancel, onRetry, color = 'primary' }) => {
             variant="contained"
             onClick={onRetry}
           >
-            Reintentar
+            Try again
           </Button>
         )}
       </div>

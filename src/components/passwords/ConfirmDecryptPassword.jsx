@@ -1,17 +1,12 @@
 import { useState } from 'react';
-
-import { DB } from 'helpers/database';
 import { useModalState } from 'hooks/useModalState';
 
-import { DB_COLLECTIONS } from 'constants/db-collections';
-import { createHash } from 'helpers/encrypt';
 import ConfirmPassword from 'components/passwords/ConfirmPassword';
+import { decryptData } from 'helpers/encrypt';
 
-const ConfirmUserPassword = ({ opened, onClose, userId, ...props }) => {
+const ConfirmDecryptPassword = ({ opened, onClose, data, ...props }) => {
   const { isOpened, setIsOpened } = useModalState(opened);
   const [error, setError] = useState('');
-
-  const { password } = DB.get(`${DB_COLLECTIONS.USERS}/${userId}`) || {};
 
   const handleClose = (value) => {
     setIsOpened(false);
@@ -20,11 +15,13 @@ const ConfirmUserPassword = ({ opened, onClose, userId, ...props }) => {
   };
 
   const onConfirm = (inputValue) => {
-    const confirmPassword = createHash(inputValue);
-
-    if (password === confirmPassword) return handleClose(inputValue);
-
-    return setError('Passwords do not match.');
+    try {
+      const decryptedData = decryptData(data, inputValue);
+      if (!decryptedData) throw new Error();
+      handleClose(inputValue);
+    } catch {
+      setError('Passwords do not match.');
+    }
   };
 
   const onRetry = () => {
@@ -43,4 +40,4 @@ const ConfirmUserPassword = ({ opened, onClose, userId, ...props }) => {
   );
 };
 
-export default ConfirmUserPassword;
+export default ConfirmDecryptPassword;

@@ -18,7 +18,7 @@ const Empty = ({ title, onContinue }) => {
           autoFocus
           onClick={onContinue}
         >
-          Continuar
+          Continue
         </Button>
       )}
     </>

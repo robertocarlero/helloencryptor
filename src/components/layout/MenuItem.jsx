@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const MenuItem = ({ path = '', title, icon }) => {
+const MenuItem = ({ path = '', title, Icon }) => {
   const location = useLocation(path);
   const isSelected = location?.pathname?.match(path);
 
@@ -12,7 +12,9 @@ const MenuItem = ({ path = '', title, icon }) => {
           isSelected ? 'selected' : ''
         }`}
       >
-        <div className="py-2 px-4">{icon}</div>
+        <div className="py-2 px-4">
+          <Icon />
+        </div>
         <p className="text-capitalize m-0">{title}</p>
       </li>
     </Link>

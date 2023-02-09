@@ -5,12 +5,13 @@
  * @return {String} - Alphanumeric ID
  */
 export function GenerateId(length = 20) {
-	const CHARSETS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-	let response = '';
+  const CHARSETS =
+    'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let response = '';
 
-	for (let i = 0; i < length; i++) {
-		const index = Math.floor(Math.random() * CHARSETS.length);
-		response += CHARSETS.charAt(index);
-	}
-	return response;
+  for (let i = 0; i < length; i++) {
+    const index = Math.floor(Math.random() * CHARSETS.length);
+    response += CHARSETS.charAt(index);
+  }
+  return response;
 }

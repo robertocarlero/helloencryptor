@@ -9,7 +9,7 @@ import Empty from 'components/common/Empty';
 
 import { DB_COLLECTIONS } from 'constants/db-collections';
 
-const UsersItemsList = ({ onItemClick = null }) => {
+const UsersItemsList = ({ onItemClick = null, userId }) => {
   const { data: items } = useQuery(`/${DB_COLLECTIONS.USERS}`, {
     queryFn: () => DB.getAll(DB_COLLECTIONS.USERS),
     initialData: [],
@@ -22,7 +22,7 @@ const UsersItemsList = ({ onItemClick = null }) => {
           <UserItem
             key={item?.id}
             data={item}
-            onClick={onItemClick ? () => onItemClick(item) : null}
+            onItemClick={onItemClick ? () => onItemClick(item) : null}
             className="mb-3"
           />
         ))}

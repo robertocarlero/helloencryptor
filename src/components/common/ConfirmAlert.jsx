@@ -19,7 +19,7 @@ const ConfirmAlert = ({
 }) => {
   const { isOpened, setIsOpened } = useModalState(opened);
 
-  const handleClose = (value) => {
+  const handleClose = (value = null) => {
     setIsOpened(false);
     if (!onClose) return;
     onClose(value);
@@ -29,26 +29,22 @@ const ConfirmAlert = ({
     <div>
       <Dialog
         open={isOpened}
-        onClose={handleClose}
+        onClose={() => handleClose()}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         maxWidth="xs"
       >
         <DialogTitle id="alert-dialog-title">
-          {title || '¿Estás seguro?'}
+          {title || 'Are you sure?'}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {message || 'Este cambio podría modificar data importante.'}
+            {message || 'This change could modify important data.'}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button
-            className="mr-2"
-            color={color}
-            onClick={() => handleClose(false)}
-          >
-            Cancelar
+          <Button className="mr-2" color={color} onClick={() => handleClose()}>
+            Cancel
           </Button>
           <Button
             autoFocus
@@ -56,7 +52,7 @@ const ConfirmAlert = ({
             variant="contained"
             onClick={() => handleClose(true)}
           >
-            {titleButton || 'Continuar'}
+            {titleButton || 'Continue'}
           </Button>
         </DialogActions>
       </Dialog>

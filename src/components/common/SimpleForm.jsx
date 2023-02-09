@@ -47,7 +47,7 @@ const SimpleForm = ({
       <footer className="w-100 d-flex justify-content-end mt-3">
         {!!onCancel && (
           <Button onClick={onCancelButtonClick}>
-            {cancelText || 'Cancelar'}
+            {cancelText || 'Cancel'}
           </Button>
         )}
         {!!onSave && (
@@ -56,7 +56,7 @@ const SimpleForm = ({
             className="ml-2"
             onClick={onSaveButtonClick}
           >
-            {saveText || 'Guardar'}
+            {saveText || 'Save'}
           </Button>
         )}
       </footer>

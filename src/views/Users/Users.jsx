@@ -9,10 +9,12 @@ import CreateUserModal from 'components/users/CreateUserModal';
 import UsersList from 'components/users/UsersList';
 
 import { DB_COLLECTIONS } from 'constants/db-collections';
+import PasswordsListModal from 'components/passwords/PasswordsListModal';
 
 const Users = () => {
-  const [modalUserCreateModalIsVisible, setUserCreateModalIsVisible] =
+  const [userCreateModalIsVisible, setUserCreateModalIsVisible] =
     useState(false);
+  const [currentUser, setCurrentUser] = useState(false);
 
   const onModalUserCreateClose = (created) => {
     setUserCreateModalIsVisible(false);
@@ -24,8 +26,16 @@ const Users = () => {
     setUserCreateModalIsVisible(true);
   };
 
+  const onUserPasswordsModalClose = () => {
+    setCurrentUser(null);
+  };
+
+  const onUsersListItemClick = (data) => {
+    setCurrentUser(data);
+  };
+
   return (
-    <>
+    <section className="app-max-width m-auto h-100">
       <div className="wrapper d-flex align-items-stretch h-100">
         <div className="w-100 h-100 d-flex flex-column">
           <section className="w-100 p-3 overflow-auto">
@@ -50,15 +60,22 @@ const Users = () => {
             </header>
           </section>
           <section className="p-4">
-            <UsersList />
+            <UsersList onItemClick={onUsersListItemClick} />
           </section>
         </div>
       </div>
       <CreateUserModal
-        opened={modalUserCreateModalIsVisible}
+        opened={userCreateModalIsVisible}
         onClose={onModalUserCreateClose}
       />
-    </>
+      {currentUser && (
+        <PasswordsListModal
+          opened={!!currentUser}
+          onClose={onUserPasswordsModalClose}
+          userId={currentUser?.id}
+        />
+      )}
+    </section>
   );
 };
 
