@@ -9,11 +9,13 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
+import * as fs from 'fs';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import { StorageEvents } from '../constants/storage-events';
 
 class AppUpdater {
   constructor() {
@@ -25,10 +27,57 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
+const folderPath = 'src/storage';
+
+const deleteFile = (filePath: string) => {
+  fs.unlink(`${folderPath}/${filePath}.txt`, (err) => {
+    if (err) console.error('Error al eliminar el archivo', err);
+  });
+};
+
+const deleteFolderRecursive = (currentFolderPath: string) => {
+  if (fs.existsSync(currentFolderPath)) {
+    fs.readdirSync(currentFolderPath).forEach((file) => {
+      const currentFilePath = path.join(currentFolderPath, file);
+      if (fs.lstatSync(currentFilePath).isDirectory()) {
+        deleteFolderRecursive(currentFilePath);
+      } else {
+        deleteFile(currentFilePath);
+      }
+    });
+  }
+};
+
+ipcMain.on(StorageEvents.set, async (event, filePath, content) => {
+  const fullPath = `${folderPath}/${filePath}.txt`;
+  const pathParts = fullPath.split('/');
+  const foldersPath = pathParts.slice(0, pathParts.length - 1).join('/');
+
+  fs.mkdirSync(foldersPath, { recursive: true });
+
+  fs.writeFile(fullPath, content, (err) => {
+    if (err) console.error('Error al guardar el archivo', err);
+  });
+});
+
+ipcMain.handle(StorageEvents.get, async (event, filePath) => {
+  return new Promise((resolve) => {
+    fs.readFile(`${folderPath}/${filePath}.txt`, null, (err, data) => {
+      if (err) console.log('Error al obtener archivo', err);
+
+      const fileData = data?.toString() || null;
+
+      return resolve(fileData);
+    });
+  });
+});
+
+ipcMain.on(StorageEvents.delete, async (event, filePath) => {
+  deleteFile(filePath);
+});
+
+ipcMain.on(StorageEvents.clear, () => {
+  deleteFolderRecursive(folderPath);
 });
 
 if (process.env.NODE_ENV === 'production') {

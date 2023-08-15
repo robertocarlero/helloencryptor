@@ -36,7 +36,7 @@ const PasswordsItemsList = ({
 
   const filteredData = useMemo(() => {
     const data = (items || [])
-      .filter(({ user_id }) => (!userId ? true : user_id === userId))
+      .filter(({ user_id } = {}) => (!userId ? true : user_id === userId))
       .filter((item) => (!searchable || !query ? true : matchesTheQuery(item)));
 
     return data;

@@ -1,23 +1,19 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-
-export type Channels = 'ipc-example';
+import { contextBridge, ipcRenderer } from 'electron';
+import { StorageEvents } from '../constants/storage-events';
 
 contextBridge.exposeInMainWorld('electron', {
-  ipcRenderer: {
-    sendMessage(channel: Channels, args: unknown[]) {
-      ipcRenderer.send(channel, args);
+  storage: {
+    setItem(path: string, data: string) {
+      ipcRenderer.send(StorageEvents.set, path, data);
     },
-    on(channel: Channels, func: (...args: unknown[]) => void) {
-      const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
-        func(...args);
-      ipcRenderer.on(channel, subscription);
-
-      return () => {
-        ipcRenderer.removeListener(channel, subscription);
-      };
+    getItem(path: string) {
+      return ipcRenderer.invoke(StorageEvents.get, path);
     },
-    once(channel: Channels, func: (...args: unknown[]) => void) {
-      ipcRenderer.once(channel, (_event, ...args) => func(...args));
+    removeItem(path: string, data: string) {
+      ipcRenderer.send(StorageEvents.delete, path, data);
+    },
+    clear(path: string, data: string) {
+      ipcRenderer.send(StorageEvents.clear, path, data);
     },
   },
 });

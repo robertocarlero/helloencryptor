@@ -1,3 +1,5 @@
+import { PASSWORD_PATTERN } from 'constants/patterns';
+
 export const USER_CREATE_FORM_SCHEMA = [
   {
     name: 'name',
@@ -11,8 +13,7 @@ export const USER_CREATE_FORM_SCHEMA = [
     label: 'Password',
     type: 'password',
     required: true,
-    pattern:
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8,50}$/,
+    pattern: PASSWORD_PATTERN,
     patternMessage:
       'The password must have a minimum of 8 characters, a maximum of 50 characters, at least one uppercase letter, at least one lowercase letter, at least one digit, at least 1 special character and cannot have blank spaces.',
     generate: true,

@@ -11,6 +11,7 @@ import {
 import { useModalState } from 'hooks/useModalState';
 
 import Error from 'components/common/Error';
+import AdviceContainer from 'components/common/AdviceContainer';
 import { PasswordInput } from 'components/inputs/PasswordInput';
 
 const ConfirmPassword = ({
@@ -71,7 +72,11 @@ const ConfirmPassword = ({
             required
           />
         )}
-        {!!error && <Error title={error} onRetry={onRetry} />}
+        {!!error && (
+          <AdviceContainer maxWidth={200}>
+            <Error title={error} onRetry={onRetry} />
+          </AdviceContainer>
+        )}
       </DialogContent>
       <DialogActions>
         <Button

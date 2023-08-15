@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useQuery } from 'react-query';
 
 import { IconButton } from '@mui/material';
 
@@ -15,16 +16,19 @@ import { DB_COLLECTIONS } from 'constants/db-collections';
 
 import PasswordDetailModal from './PasswordDetailModal';
 
-const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
+const PasswordItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
   const [confirmIsVisible, setConfirmIsVisible] = useState(false);
   const [passwordDetailIsVisible, setPasswordDetailIsVisible] = useState(false);
   const [secretKey, setSecretKey] = useState(false);
   const [confirmPasswordIsVisible, setConfirmPasswordIsVisible] =
     useState(false);
 
-  const { name, user_id } = data;
+  const { name, user_id } = data || {};
 
-  const user = DB.get(`${DB_COLLECTIONS.USERS}/${user_id}`) || {};
+  const { data: user } = useQuery(`/${DB_COLLECTIONS.USERS}/${user_id}`, {
+    queryFn: () => DB.get(`${DB_COLLECTIONS.USERS}/${user_id}`),
+    initialData: {},
+  });
 
   const onDeleteButtonClick = () => {
     setConfirmIsVisible(true);
@@ -33,7 +37,7 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
   const onConfirmClose = async (result) => {
     setConfirmIsVisible(false);
     if (!result) return;
-    DB.erase(`${DB_COLLECTIONS.PASSWORDS}/${data?.id}`);
+    await DB.erase(`${DB_COLLECTIONS.PASSWORDS}/${data?.id}`);
     queryClient.invalidateQueries({
       queryKey: [`/${DB_COLLECTIONS.PASSWORDS}`],
     });
@@ -103,4 +107,4 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
   );
 };
 
-export default DealerItem;
+export default PasswordItem;

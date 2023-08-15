@@ -34,7 +34,7 @@ const CreatePassword = ({ onCancel, onSuccess, data }) => {
     value: id,
   }));
 
-  const sendData = (secretKey) => {
+  const sendData = async (secretKey) => {
     const password = encryptText(formValue?.password, secretKey);
 
     const body = {
@@ -44,7 +44,7 @@ const CreatePassword = ({ onCancel, onSuccess, data }) => {
 
     delete body.confirm_password;
 
-    DB.set(DB_COLLECTIONS.PASSWORDS, body);
+    await DB.set(DB_COLLECTIONS.PASSWORDS, body);
     queryClient.invalidateQueries({
       queryKey: [`/${DB_COLLECTIONS.PASSWORDS}`],
     });

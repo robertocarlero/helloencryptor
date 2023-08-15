@@ -19,14 +19,14 @@ const CreateUser = ({ onCancel, onSuccess, data }) => {
 
   const DB = database();
 
-  const sendData = () => {
+  const sendData = async () => {
     const password = createHash(formValue?.password);
     const body = {
       ...formValue,
       password,
     };
     delete body.confirm_password;
-    DB.set(DB_COLLECTIONS.USERS, body);
+    await DB.set(DB_COLLECTIONS.USERS, body);
     setSaved(true);
   };
 

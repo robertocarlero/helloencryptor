@@ -38,7 +38,7 @@ const Users = () => {
     <section className="app-max-width m-auto h-100">
       <div className="wrapper d-flex align-items-stretch h-100">
         <div className="w-100 h-100 d-flex flex-column">
-          <section className="w-100 p-3 overflow-auto">
+          <section className="w-100 p-3">
             <header className="p-3 mt-3">
               <h1 className="font-weight-bold title color_dark">
                 Users list

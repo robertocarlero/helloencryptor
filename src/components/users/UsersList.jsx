@@ -22,7 +22,7 @@ const UsersItemsList = ({ onItemClick = null }) => {
           <UserItem
             key={item?.id}
             data={item}
-            onItemClick={onItemClick ? () => onItemClick(item) : null}
+            onClick={onItemClick ? () => onItemClick(item) : null}
             className="mb-3"
           />
         ))}

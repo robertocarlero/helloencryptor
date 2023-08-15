@@ -14,7 +14,7 @@ import { DB_COLLECTIONS } from 'constants/db-collections';
 
 import ConfirmUserPassword from './ConfirmUserPassword';
 
-const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
+const UserItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
   const [confirmPasswordIsVisible, setConfirmPasswordIsVisible] =
     useState(false);
   const [confirmIsVisible, setConfirmIsVisible] = useState(false);
@@ -22,16 +22,16 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
 
   const [message, setMessage] = useState('');
 
-  const getUserPasswords = () => {
-    const passwords = DB.getAll(DB_COLLECTIONS.PASSWORDS);
+  const getUserPasswords = async () => {
+    const passwords = (await DB.getAll(DB_COLLECTIONS.PASSWORDS)) || [];
     const userId = data?.id;
     const userPasswords = passwords.filter(({ user_id }) => user_id === userId);
 
     return userPasswords;
   };
 
-  const downloadData = (secretKey) => {
-    const userPasswords = getUserPasswords();
+  const downloadData = async (secretKey) => {
+    const userPasswords = await getUserPasswords();
 
     exportDataToEncryptedFile(
       {
@@ -48,14 +48,19 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
     setConfirmIsVisible(false);
 
     if (!result) return;
-    DB.erase(`${DB_COLLECTIONS.USERS}/${data?.id}`);
-    const passwords = DB.getAll(DB_COLLECTIONS.PASSWORDS);
+    await DB.erase(`${DB_COLLECTIONS.USERS}/${data?.id}`);
+    const passwords = await DB.getAll(DB_COLLECTIONS.PASSWORDS);
     const userPasswords = (passwords || []).filter(
       ({ user_id }) => user_id === data?.id
     );
-    userPasswords.forEach(({ id }) => {
-      DB.erase(`${DB_COLLECTIONS.PASSWORDS}/${id}`);
+
+    const promises = userPasswords.map(async ({ id }) => {
+      const body = await DB.erase(`${DB_COLLECTIONS.PASSWORDS}/${id}`);
+      return body;
     });
+
+    await Promise.all(promises);
+
     queryClient.invalidateQueries({ queryKey: [`/${DB_COLLECTIONS.USERS}`] });
   };
 
@@ -72,9 +77,9 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
     setConfirmIsVisible(true);
   };
 
-  const onDownloadButtonClick = (event) => {
+  const onDownloadButtonClick = async (event) => {
     event?.stopPropagation();
-    const userPasswords = getUserPasswords();
+    const userPasswords = await getUserPasswords();
 
     if (!userPasswords?.length) {
       setMessage('Error: The user has no passwords.');
@@ -141,4 +146,4 @@ const DealerItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
   );
 };
 
-export default DealerItem;
+export default UserItem;

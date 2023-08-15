@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Button } from '@mui/material';
+import { Alert, IconButton, Snackbar, Button } from '@mui/material';
 
 import { DB } from 'helpers/database';
 import { decryptData } from 'helpers/encrypt';
@@ -17,13 +17,24 @@ export default function ImportPasswords() {
   const [uploadFileModalIsVisible, setUploadFileModalIsVisible] =
     useState(false);
   const [encryptedData, setEncryptedData] = useState();
+  const [message, setMessage] = useState('');
 
-  const savePasswords = ({ user, passwords }) => {
-    DB.set(`${DB_COLLECTIONS.USERS}`, user);
+  const savePasswords = async ({ user, passwords }) => {
+    try {
+      const currentUser = await DB.get(`${DB_COLLECTIONS.USERS}/${user.id}`);
+      if (!currentUser) {
+        await DB.set(`${DB_COLLECTIONS.USERS}`, user);
+      }
+      const promises = passwords.map(async (password) => {
+        return await DB.set(`${DB_COLLECTIONS.PASSWORDS}`, password);
+      });
 
-    passwords.forEach((password) => {
-      DB.set(`${DB_COLLECTIONS.PASSWORDS}`, password);
-    });
+      await Promise.all(promises);
+
+      setMessage('Passwords imported successfully.');
+    } catch (error) {
+      setMessage('Error: Passwords not imported.');
+    }
   };
 
   const handleLoadFileModalClose = (data) => {
@@ -42,9 +53,15 @@ export default function ImportPasswords() {
   const onConfirmPasswordClose = async (result) => {
     setEncryptedData(null);
     if (!result) return;
-    const contentDecrypted = decryptData(encryptedData, result);
+    const contentDecrypted = await decryptData(encryptedData, result);
     savePasswords(contentDecrypted);
   };
+
+  const onToastClose = () => {
+    setMessage('');
+  };
+
+  const isSuccess = !message?.toLowerCase()?.match('error');
 
   return (
     <section className="app-max-width m-auto h-100 d-flex flex-column justify-content-center align-items-center">
@@ -68,6 +85,17 @@ export default function ImportPasswords() {
         onClose={onConfirmPasswordClose}
         data={encryptedData}
       />
+      {!!message && (
+        <Snackbar open autoHideDuration={3000} onClose={onToastClose}>
+          <Alert
+            onClose={onToastClose}
+            severity={isSuccess ? 'success' : 'error'}
+            sx={{ width: '100%' }}
+          >
+            {message}
+          </Alert>
+        </Snackbar>
+      )}
     </section>
   );
 }

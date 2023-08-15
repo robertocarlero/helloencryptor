@@ -6,8 +6,8 @@ import emptyAsset from '../../assets/images/empty-asset.svg';
 const Empty = ({ title, onContinue }) => {
   return (
     <>
-      <figure className="asset d-flex justify-content-center ">
-        <img src={emptyAsset} alt="empty asset" style={{ width: '400px' }} />
+      <figure className="asset d-flex justify-content-center w-100">
+        <img src={emptyAsset} alt="empty asset" style={{ width: '100%' }} />
       </figure>
       {title && <p className="color_medium text-center m-0 my-3">{title}</p>}
       {onContinue && (

@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, Fragment } from 'react';
+import { useQuery } from 'react-query';
 
 import {
   Alert,
@@ -36,9 +37,13 @@ const PasswordDetail = ({ onContinue, continueText, data, secretKey }) => {
   const onContinueButtonClick = () => {
     onContinue();
   };
-  const { password, name, user_id, site } = data;
 
-  const user = DB.get(`${DB_COLLECTIONS.USERS}/${user_id}`) || {};
+  const { password, name, user_id, site } = data || {};
+
+  const { data: user } = useQuery(`/${DB_COLLECTIONS.USERS}/${user_id}`, {
+    queryFn: () => DB.get(`${DB_COLLECTIONS.USERS}/${user_id}`),
+    initialData: {},
+  });
 
   const decryptedPassword = useMemo(() => {
     const passwordDecrypted = decryptText(password, secretKey);
@@ -90,7 +95,7 @@ const PasswordDetail = ({ onContinue, continueText, data, secretKey }) => {
 
       <List dense>
         {items.map(({ label, value }) => (
-          <>
+          <Fragment key={label}>
             <ListItem>
               <ListItemText
                 primary={value || '-'}
@@ -98,7 +103,7 @@ const PasswordDetail = ({ onContinue, continueText, data, secretKey }) => {
               />
             </ListItem>
             <Divider />
-          </>
+          </Fragment>
         ))}
         <ListItem
           secondaryAction={

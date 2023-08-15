@@ -1,7 +1,11 @@
+import { useState } from 'react';
+
 import { RestartAlt, Visibility, VisibilityOff } from '@mui/icons-material';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
+
 import { GenerateId } from 'helpers/generate-id';
-import { useState } from 'react';
+
+import { PASSWORD_PATTERN } from 'constants/patterns';
 
 export function PasswordInput({ generate, ...props }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -19,7 +23,7 @@ export function PasswordInput({ generate, ...props }) {
   };
 
   const onGenerateButtonClick = () => {
-    const newPassword = GenerateId(15);
+    const newPassword = GenerateId(15, PASSWORD_PATTERN);
     props?.onChange({ target: { name: props.name, value: newPassword } });
   };
 

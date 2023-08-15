@@ -40,7 +40,7 @@
     "build:renderer": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.prod.ts",
     "postinstall": "ts-node .erb/scripts/check-native-dep.js && electron-builder install-app-deps && cross-env NODE_ENV=development TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.renderer.dev.dll.ts",
     "lint": "cross-env NODE_ENV=development eslint . --ext .js,.jsx,.ts,.tsx",
-    "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --linux  --publish never",
+    "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --windows  --publish never",
     "prepare": "husky install",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
@@ -141,7 +141,7 @@
     "@typescript-eslint/parser": "^5.33.1",
     "browserslist-config-erb": "^0.0.3",
     "chalk": "^4.1.2",
-    "concurrently": "^7.3.0",
+    "concurrently": "^7.6.0",
     "core-js": "^3.24.1",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
@@ -233,15 +233,23 @@
     },
     "win": {
       "target": [
-        "nsis"
+        "portable"
       ]
+    },
+    "portable": {
+      "artifactName": "${productName}-windows-${arch}.${ext}"
     },
     "linux": {
       "target": [
-        "AppImage",
-        "deb"
+        {
+          "target": "AppImage",
+          "arch": "x64"
+        }
       ],
-      "category": "Tools"
+      "category": "Tools",
+      "executableName": "linux.hello-encryptor",
+      "icon": "assets/icons/linux/icon.png",
+      "artifactName": "${productName}-linux-${arch}.${ext}"
     },
     "directories": {
       "app": "release/app",
