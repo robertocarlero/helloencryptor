@@ -9,11 +9,11 @@ contextBridge.exposeInMainWorld('electron', {
     getItem(path: string) {
       return ipcRenderer.invoke(StorageEvents.get, path);
     },
-    removeItem(path: string, data: string) {
-      ipcRenderer.send(StorageEvents.delete, path, data);
+    removeItem(path: string) {
+      ipcRenderer.send(StorageEvents.delete, path);
     },
-    clear(path: string, data: string) {
-      ipcRenderer.send(StorageEvents.clear, path, data);
+    clear() {
+      ipcRenderer.send(StorageEvents.clear);
     },
   },
 });

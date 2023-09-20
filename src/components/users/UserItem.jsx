@@ -14,7 +14,7 @@ import { DB_COLLECTIONS } from 'constants/db-collections';
 
 import ConfirmUserPassword from './ConfirmUserPassword';
 
-const UserItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
+const UserItem = ({ data = {}, className, onItemClick, onKeyUp, ...props }) => {
   const [confirmPasswordIsVisible, setConfirmPasswordIsVisible] =
     useState(false);
   const [confirmIsVisible, setConfirmIsVisible] = useState(false);
@@ -104,7 +104,7 @@ const UserItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
         className={`w-100 bg_white shadow-sm radius_medium d-flex justify-content-between align-items-center p-2 ${
           className || ''
         }`}
-        onClick={(...params) => onClick && onClick(...params)}
+        onClick={(...params) => onItemClick && onItemClick(...params)}
         {...props}
       >
         <div className="w-100 h-100 d-flex ">
@@ -119,12 +119,14 @@ const UserItem = ({ data = {}, className, onClick, onKeyUp, ...props }) => {
         <IconButton onClick={onDownloadButtonClick}>
           <Download fontSize="small" />
         </IconButton>
+      </div>
+      {confirmIsVisible && (
         <ConfirmAlert
           color="error"
           opened={confirmIsVisible}
           onClose={onConfirmClose}
         />
-      </div>
+      )}
       <ConfirmUserPassword
         color="error"
         userId={data?.id}

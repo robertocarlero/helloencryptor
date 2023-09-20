@@ -231,11 +231,6 @@
         }
       ]
     },
-    "win": {
-      "target": [
-        "portable"
-      ]
-    },
     "portable": {
       "artifactName": "${productName}-windows-${arch}.${ext}"
     },
@@ -261,12 +256,9 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "helloware.tech",
+      "repo": "helloware.tech"
     }
-  },
-  "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
   },
   "devEngines": {
     "node": ">=14.x",
